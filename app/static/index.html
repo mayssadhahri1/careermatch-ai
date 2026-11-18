@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CareerMatch AI — Agent d'analyse de candidature</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">CM</span>
+      <div>
+        <h1>CareerMatch <span class="accent">AI</span></h1>
+        <p>Agent IA qui compare ton CV à une offre de stage</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span id="llm-badge" class="badge badge-muted">LLM : …</span>
+      <a class="link" href="/docs" target="_blank" rel="noopener">API · Swagger</a>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="history card">
+      <div class="card-head">
+        <h2>Historique</h2>
+        <button id="refresh-history" class="icon-btn" title="Rafraîchir" aria-label="Rafraîchir">↻</button>
+      </div>
+      <ul id="history-list" class="history-list"><li class="empty">Aucune analyse pour l'instant.</li></ul>
+    </aside>
+
+    <section class="content">
+      <form id="analysis-form" class="card form">
+        <div class="row">
+          <label>Intitulé du poste
+            <input id="job-title" type="text" maxlength="200" placeholder="Ex. Stage PFE — Développeur Full-Stack" />
+          </label>
+          <label>Entreprise
+            <input id="company" type="text" maxlength="200" placeholder="Ex. Acme Tunisie" />
+          </label>
+        </div>
+        <div class="row">
+          <label>Offre de stage
+            <textarea id="offer-text" rows="10" required minlength="30" placeholder="Colle ici le texte complet de l'annonce…"></textarea>
+          </label>
+          <label>Ton CV
+            <textarea id="cv-text" rows="10" required minlength="30" placeholder="Colle ici le texte de ton CV…"></textarea>
+          </label>
+        </div>
+        <div class="actions">
+          <button type="button" id="fill-example" class="btn btn-ghost">Remplir un exemple</button>
+          <button type="submit" id="submit-btn" class="btn btn-primary">Analyser ma candidature</button>
+        </div>
+        <p id="form-error" class="error" role="alert" hidden></p>
+      </form>
+
+      <section id="results" class="results" hidden>
+        <div class="grid-top">
+          <div class="card score-card">
+            <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+              <circle cx="60" cy="60" r="52" class="ring-bg" />
+              <circle cx="60" cy="60" r="52" class="ring-fg" id="ring-fg" />
+            </svg>
+            <div class="score-text">
+              <span id="score-value" class="score-value">0</span><span class="score-max">/100</span>
+              <span id="score-level" class="level">—</span>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Couverture par domaine</h2>
+            <div id="coverage" class="coverage"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Compétences</h2>
+          <div class="skills-grid">
+            <div><h3 class="ok">✔ Exigées et présentes</h3><div id="matched-required" class="chips"></div></div>
+            <div><h3 class="ko">✘ Exigées mais absentes</h3><div id="missing-required" class="chips"></div></div>
+            <div><h3 class="warn">＋ Souhaitées (un plus)</h3><div id="optional" class="chips"></div></div>
+            <div><h3 class="info">★ Tes atouts en plus</h3><div id="extra" class="chips"></div></div>
+          </div>
+        </div>
+
+        <div class="grid-two">
+          <div class="card">
+            <h2>Conseils de l'agent</h2>
+            <ul id="advice" class="list"></ul>
+          </div>
+          <div class="card">
+            <h2>Plan de progression</h2>
+            <ul id="plan" class="list"></ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Paragraphe de lettre de motivation</h2>
+            <button id="copy-letter" class="btn btn-ghost btn-sm" type="button">Copier</button>
+          </div>
+          <p id="letter" class="letter"></p>
+        </div>
+
+        <div class="card">
+          <h2>Raisonnement de l'agent</h2>
+          <ol id="steps" class="steps"></ol>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">CareerMatch AI · FastAPI · Agent IA · par <a href="https://www.linkedin.com/in/mayssa-dhahri-38b1373bb/" target="_blank" rel="noopener">Mayssa Dhahri</a></footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

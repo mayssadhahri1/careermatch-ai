@@ -1,0 +1,28 @@
+# Lancement : docker compose up --build
+# Avec un modèle local : docker compose --profile llm up --build
+#   puis : docker compose exec ollama ollama pull llama3.1
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      LLM_PROVIDER: ${LLM_PROVIDER:-none}
+      LLM_MODEL: ${LLM_MODEL:-llama3.1}
+      OLLAMA_BASE_URL: http://ollama:11434
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    volumes:
+      - careermatch-data:/app/data
+
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["llm"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+
+volumes:
+  careermatch-data:
+  ollama-models:
